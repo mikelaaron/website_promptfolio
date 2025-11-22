@@ -41,14 +41,10 @@ const features: Feature[] = [
 ]
 
 export function ScrollingPhoneShowcase() {
-  const containerRef = useRef<HTMLDivElement | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
   // Track which feature is in view using Intersection Observer
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -59,12 +55,12 @@ export function ScrollingPhoneShowcase() {
         })
       },
       {
-        root: container,
-        threshold: 0.5, // Feature must be 50% visible to be considered active
+        threshold: 0.6, // Feature must be 60% visible to be considered active
+        rootMargin: '-10% 0px -10% 0px', // Ignore top and bottom 10%
       }
     )
 
-    const items = container.querySelectorAll('[data-index]')
+    const items = document.querySelectorAll('[data-index]')
     items.forEach((item) => observer.observe(item))
 
     return () => observer.disconnect()
@@ -81,24 +77,13 @@ export function ScrollingPhoneShowcase() {
         </div>
       </section>
 
-      {/* DESKTOP/TABLET VIEW with CSS Scroll Snap */}
-      <section 
-        ref={containerRef}
-        className="hidden md:block relative bg-gradient-to-b from-brand-beige/30 via-white to-surface-beige overflow-y-auto h-screen"
-        style={{
-          scrollSnapType: 'y mandatory',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
+      {/* DESKTOP/TABLET VIEW with CSS Scroll Snap on page body */}
+      <div className="hidden md:block">
         {features.map((feature, index) => (
-          <div
+          <section
             key={feature.id}
             data-index={index}
-            className="h-screen flex items-center justify-center"
-            style={{
-              scrollSnapAlign: 'start',
-              scrollSnapStop: 'always',
-            }}
+            className="h-screen flex items-center justify-center relative bg-gradient-to-b from-brand-beige/30 via-white to-surface-beige snap-start snap-always"
           >
             <div className="mx-auto flex w-full max-w-6xl gap-12 px-6">
               {/* LEFT SIDE: Text Content */}
@@ -163,9 +148,9 @@ export function ScrollingPhoneShowcase() {
                 </motion.div>
               </div>
             </div>
-          </div>
+          </section>
         ))}
-      </section>
+      </div>
     </>
   )
 }
