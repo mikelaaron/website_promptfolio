@@ -121,55 +121,41 @@ export function ScrollingPhoneShowcase() {
               </div>
             </div>
 
-            <div className="relative w-1/2 flex items-center justify-center pr-4" style={{ isolation: 'isolate' }}>
+            <div className="relative w-1/2 flex items-center justify-center pr-4">
               <motion.div
                 className="relative w-full max-w-[360px]"
                 style={{ 
-                  y: phoneParallax,
-                  outline: 'none',
-                  border: 'none',
-                  WebkitTapHighlightColor: 'transparent'
+                  y: phoneParallax
                 }}
               >
-                <div 
-                  className="relative aspect-[9/19.5] w-full overflow-hidden"
-                  style={{ 
-                    outline: 0,
-                    border: 0,
-                    boxShadow: 'none',
-                    transform: 'translateZ(0)',
-                    WebkitTransform: 'translateZ(0)',
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
-                    WebkitFontSmoothing: 'antialiased'
-                  }}
-                >
-                  {features.map((feature, index) => (
-                    <motion.div
-                      key={feature.id}
-                      className="absolute inset-0"
-                      initial={false}
-                      animate={{ opacity: activeIndex === index ? 1 : 0 }}
-                      transition={{ duration: 0.5, ease: "easeOut" }}
-                      style={{ 
-                        outline: 0,
-                        border: 0,
-                        boxShadow: 'none',
-                        transform: 'translateZ(0)',
-                        backfaceVisibility: 'hidden'
-                      }}
-                    >
-                      <Image
-                        src={feature.image || "/placeholder.svg"}
-                        alt={feature.title}
-                        fill
-                        priority={index === 0}
-                        sizes="(min-width: 768px) 360px"
-                        className="object-contain object-center drop-shadow-2xl"
-                      />
-                    </motion.div>
-                  ))}
-                </div>
+                {features.map((feature, index) => (
+                  <motion.div
+                    key={feature.id}
+                    className="absolute inset-0"
+                    initial={false}
+                    animate={{ opacity: activeIndex === index ? 1 : 0 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                  >
+                    <Image
+                      src={feature.image || "/placeholder.svg"}
+                      alt={feature.title}
+                      width={768}
+                      height={1536}
+                      priority={index === 0}
+                      sizes="(min-width: 768px) 360px"
+                      className="w-full h-auto drop-shadow-2xl"
+                    />
+                  </motion.div>
+                ))}
+                {/* Spacer to maintain height */}
+                <Image
+                  src={features[0].image}
+                  alt=""
+                  width={768}
+                  height={1536}
+                  className="w-full h-auto opacity-0 pointer-events-none"
+                  aria-hidden="true"
+                />
               </motion.div>
             </div>
           </div>
