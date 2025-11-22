@@ -72,9 +72,27 @@ export function ScrollingPhoneShowcase() {
         ))}
       </div>
 
-      <div className="hidden h-full md:block">
-        <div className="sticky top-0 flex h-screen items-center">
-          <div className="mx-auto flex w-full max-w-6xl gap-12 px-6">
+      <div 
+        className="hidden h-full md:block"
+        style={{
+          background: 'transparent',
+          backgroundColor: 'transparent'
+        }}
+      >
+        <div 
+          className="sticky top-0 flex h-screen items-center"
+          style={{
+            background: 'transparent',
+            backgroundColor: 'transparent'
+          }}
+        >
+          <div 
+            className="mx-auto flex w-full max-w-6xl gap-12 px-6"
+            style={{
+              background: 'transparent',
+              backgroundColor: 'transparent'
+            }}
+          >
             <div className="relative w-1/2 pl-4">
               <div className="relative min-h-[360px]">
                 {features.map((feature, index) => (
@@ -121,20 +139,46 @@ export function ScrollingPhoneShowcase() {
               </div>
             </div>
 
-            <div className="relative w-1/2 flex items-center justify-center pr-4">
+            <div 
+              className="relative w-1/2 flex items-center justify-center pr-4"
+              style={{
+                background: 'transparent',
+                backgroundColor: 'transparent',
+                border: 'none',
+                outline: 'none',
+                boxShadow: 'none'
+              }}
+            >
               <motion.div
                 className="relative w-full max-w-[360px]"
                 style={{ 
-                  y: phoneParallax
+                  y: phoneParallax,
+                  isolation: 'isolate',
+                  overflow: 'visible',
+                  background: 'transparent',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  boxShadow: 'none',
+                  contain: 'strict' as any
                 }}
               >
                 {features.map((feature, index) => (
                   <motion.div
                     key={feature.id}
-                    className="absolute inset-0"
+                    className={`absolute inset-0 ${activeIndex !== index ? 'hidden' : ''}`}
                     initial={false}
                     animate={{ opacity: activeIndex === index ? 1 : 0 }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
+                    style={{
+                      background: 'transparent',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      outline: 'none',
+                      boxShadow: 'none',
+                      pointerEvents: 'none',
+                      zIndex: activeIndex === index ? 10 : 1
+                    }}
                   >
                     <Image
                       src={feature.image || "/placeholder.svg"}
@@ -143,19 +187,28 @@ export function ScrollingPhoneShowcase() {
                       height={1536}
                       priority={index === 0}
                       sizes="(min-width: 768px) 360px"
-                      className="w-full h-auto drop-shadow-2xl"
+                      className="block w-full h-auto drop-shadow-2xl"
+                      style={{
+                        background: 'transparent',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        outline: 'none',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                        position: 'relative',
+                        zIndex: 10
+                      }}
                     />
                   </motion.div>
                 ))}
-                {/* Spacer to maintain height */}
-                <Image
-                  src={features[0].image}
-                  alt=""
-                  width={768}
-                  height={1536}
-                  className="w-full h-auto opacity-0 pointer-events-none"
-                  aria-hidden="true"
-                />
+                {/* Invisible spacer for height */}
+                <div style={{ 
+                  width: '1px', 
+                  height: '1px', 
+                  opacity: 0, 
+                  position: 'absolute',
+                  pointerEvents: 'none',
+                  paddingBottom: '216.67%'
+                }} />
               </motion.div>
             </div>
           </div>
