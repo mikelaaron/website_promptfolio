@@ -121,19 +121,27 @@ export function ScrollingPhoneShowcase() {
               </div>
             </div>
 
-            <div className="relative w-1/2 flex items-center justify-center pr-4">
+            <div className="relative w-1/2 flex items-center justify-center pr-4" style={{ isolation: 'isolate' }}>
               <motion.div
                 className="relative w-full max-w-[360px]"
-                style={{ y: phoneParallax }}
+                style={{ 
+                  y: phoneParallax,
+                  outline: 'none',
+                  border: 'none',
+                  WebkitTapHighlightColor: 'transparent'
+                }}
               >
                 <div 
-                  className="relative aspect-[9/19.5] w-full"
+                  className="relative aspect-[9/19.5] w-full overflow-hidden"
                   style={{ 
-                    background: 'transparent',
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    outline: 'none',
-                    boxShadow: 'none'
+                    outline: 0,
+                    border: 0,
+                    boxShadow: 'none',
+                    transform: 'translateZ(0)',
+                    WebkitTransform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    WebkitFontSmoothing: 'antialiased'
                   }}
                 >
                   {features.map((feature, index) => (
@@ -144,8 +152,11 @@ export function ScrollingPhoneShowcase() {
                       animate={{ opacity: activeIndex === index ? 1 : 0 }}
                       transition={{ duration: 0.5, ease: "easeOut" }}
                       style={{ 
-                        background: 'transparent',
-                        backgroundColor: 'transparent' 
+                        outline: 0,
+                        border: 0,
+                        boxShadow: 'none',
+                        transform: 'translateZ(0)',
+                        backfaceVisibility: 'hidden'
                       }}
                     >
                       <Image
@@ -155,7 +166,6 @@ export function ScrollingPhoneShowcase() {
                         priority={index === 0}
                         sizes="(min-width: 768px) 360px"
                         className="object-contain object-center drop-shadow-2xl"
-                        style={{ backgroundColor: 'transparent' }}
                       />
                     </motion.div>
                   ))}
