@@ -11,11 +11,10 @@ export function Logo({ size = "md", className = "" }: LogoProps) {
   }
 
   return (
-    <picture className={`${sizeClasses[size]} ${className}`}>
-      {/* Show dark logo when user prefers dark mode */}
-      <source srcSet="/logo-dark.png" media="(prefers-color-scheme: dark)" />
-      {/* Show light logo by default or when user prefers light mode */}
-      <img src="/logo-light.png" alt="PromptFolio Logo" className={`${sizeClasses[size]} object-contain`} />
-    </picture>
+    <img 
+      src="/logo-light.png" 
+      alt="PromptFolio Logo" 
+      className={`${sizeClasses[size]} ${className} object-contain`} 
+    />
   )
 }

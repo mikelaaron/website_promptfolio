@@ -1,110 +1,152 @@
 "use client"
 
-import { useRef } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import Image from "next/image"
+import { useRef, useState } from "react"
+import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion"
+import { FeatureCard, type Feature } from "@/components/feature-card"
+
+const features: Feature[] = [
+  {
+    id: "feature-library",
+    title: "See Your Work at a Glance",
+    description:
+      "Browse your entire prompt library with a beautiful, Pinterest-style grid. Instantly preview images and videos, making rediscovery and organization effortless.",
+    color: "var(--brand-teal)",
+    image: "/feature1.png",
+  },
+  {
+    id: "feature-vocab",
+    title: "Vocabulary That Inspires",
+    description:
+      "Unlock a curated library of 70+ visual terms—photography, lighting, and style examples—right inside your prompt editor. Learn what creative descriptors actually look like, and add them to your prompts with a tap.",
+    color: "var(--brand-gold)",
+    image: "/feature2.png",
+  },
+  {
+    id: "feature-guidance",
+    title: "Real-Time Prompt Guidance",
+    description:
+      "As you write, PromptFolio suggests professional vocabulary and techniques tailored to your prompt. Discover new ideas and refine your vision in seconds—no guesswork, just instant creative support.",
+    color: "var(--brand-orange)",
+    image: "/feature3.png",
+  },
+  {
+    id: "feature-compare",
+    title: "Compare and Learn from Your Results",
+    description:
+      "Save outputs from multiple AI models under a single prompt. Rate favorites, add notes, and see exactly which approach delivered the best result. Build your creative knowledge with every experiment.",
+    color: "var(--brand-teal)",
+    image: "/feature4.png",
+  },
+]
 
 export function ScrollingPhoneShowcase() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  // Track scroll progress within this section
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: sectionRef,
     offset: ["start end", "end start"],
   })
 
-  // Map scroll progress to feature index (0-3)
-  const activeFeature = useTransform(scrollYProgress, [0.2, 0.35, 0.5, 0.65, 0.8], [0, 1, 2, 3, 3])
+  const phoneParallax = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"])
 
-  // Features data
-  const features = [
-    {
-      title: "Capture with Your Camera",
-      description:
-        "Snap a screenshot. Extract the prompt instantly with OCR. No typing. No copy-paste. Just point and save.",
-      color: "var(--brand-teal)",
-      image: "/iphone-app-screenshot-showing-camera-view-capturin.jpg",
-    },
-    {
-      title: "Find by Feel, Not Memory",
-      description:
-        "Pinterest-style masonry grid. Remember the blue penguin in neon? Find it in seconds. Visual browsing beats text search every time.",
-      color: "var(--brand-gold)",
-      image: "/iphone-app-screenshot-showing-pinterest-masonry-gr.jpg",
-    },
-    {
-      title: "Remix with Pro Vocabulary",
-      description:
-        "800+ curated terms from 'Kodak Portra 400' to 'chiaroscuro lighting.' Tap to insert. Learn as you build. Never start from scratch.",
-      color: "var(--brand-orange)",
-      image: "/iphone-app-screenshot-showing-bottom-drawer-interf.jpg",
-    },
-    {
-      title: "Track What Works, Where",
-      description:
-        "Same prompt. Multiple models. Star ratings. Notes. Build your playbook of what works in Midjourney vs. DALL-E vs. Flux.",
-      color: "var(--brand-teal)",
-      image: "/iphone-app-screenshot-showing-split-screen-compari.jpg",
-    },
-  ]
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const segment = 1 / features.length
+    const nextIndex = Math.min(
+      features.length - 1,
+      Math.max(0, Math.floor(latest / segment))
+    )
+
+    setActiveIndex((prev) => (prev === nextIndex ? prev : nextIndex))
+  })
 
   return (
-    <section ref={containerRef} className="relative h-[400vh] bg-gradient-to-b from-brand-beige/20 to-surface-beige">
-      {/* Section Headline */}
-      <div className="absolute top-24 left-0 right-0 text-center z-10 px-4">
-        <h2 className="text-5xl md:text-7xl font-bold text-brand-forest">Built for How You Actually Work</h2>
+    <section
+      ref={sectionRef}
+      className="relative bg-gradient-to-b from-brand-beige/30 via-white to-surface-beige py-16 md:py-24 md:h-[400vh]"
+    >
+      <div className="md:hidden space-y-8 px-4">
+        {features.map((feature, index) => (
+          <FeatureCard key={feature.id} feature={feature} index={index} />
+        ))}
       </div>
 
-      {/* Sticky Container */}
-      <div className="sticky top-0 h-screen flex items-center justify-center">
-        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
-          {/* Left Side: Feature Text */}
-          <div className="text-center md:text-left">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: Math.round(activeFeature.get()) === index ? 1 : 0,
-                  x: Math.round(activeFeature.get()) === index ? 0 : -20,
-                }}
-                transition={{ duration: 0.4 }}
-                className="absolute"
-              >
-                <h3 className="text-3xl md:text-4xl font-semibold text-brand-forest mb-4">{feature.title}</h3>
-                <p className="text-lg text-brand-forest/80 leading-relaxed">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Right Side: iPhone Mockup */}
-          <div className="relative">
-            <div className="relative w-[300px] h-[600px] mx-auto">
-              {/* iPhone frame */}
-              <div className="absolute inset-0 rounded-[50px] border-8 border-brand-forest/90 shadow-[var(--shadow-card-dark)]"></div>
-
-              {/* Dynamic Notch */}
-              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-brand-forest rounded-b-3xl z-10"></div>
-
-              {/* Screen Content */}
-              <div className="absolute inset-4 top-8 bottom-8 rounded-[42px] overflow-hidden bg-white">
+      <div className="hidden h-full md:block">
+        <div className="sticky top-0 flex h-screen items-center">
+          <div className="mx-auto flex w-full max-w-6xl gap-12 px-6">
+            <div className="relative w-1/2 pl-4">
+              <div className="relative min-h-[360px]">
                 {features.map((feature, index) => (
                   <motion.div
-                    key={index}
-                    className="absolute inset-0"
-                    initial={{ opacity: 0 }}
+                    key={feature.id}
+                    className="absolute inset-0 flex flex-col justify-center"
                     animate={{
-                      opacity: Math.round(activeFeature.get()) === index ? 1 : 0,
+                      opacity: activeIndex === index ? 1 : 0,
+                      y: activeIndex === index ? 0 : 32,
                     }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.45, ease: "easeOut" }}
                   >
-                    <img
-                      src={feature.image || "/placeholder.svg"}
-                      alt={feature.title}
-                      className="w-full h-full object-cover"
-                    />
+                    <p className="text-xs font-medium uppercase tracking-[0.08em] text-brand-forest/60">
+                      {String(index + 1).padStart(2, "0")}
+                    </p>
+                    <h3 className="mt-4 text-4xl font-semibold leading-tight text-brand-forest">
+                      {feature.title}
+                    </h3>
+                    <p className="mt-4 text-lg leading-relaxed text-brand-forest/80">
+                      {feature.description}
+                    </p>
                   </motion.div>
                 ))}
               </div>
+
+              <div className="mt-12 flex items-center gap-3">
+                <div className="flex -space-x-1">
+                  {features.map((feature, index) => (
+                    <span
+                      key={feature.id}
+                      className="h-2 w-2 rounded-full border border-white/50"
+                      style={{
+                        backgroundColor: activeIndex === index ? feature.color : "transparent",
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="h-px flex-1 bg-brand-forest/10">
+                  <div
+                    className="h-full bg-brand-forest"
+                    style={{ width: `${((activeIndex + 1) / features.length) * 100}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="relative w-1/2 flex items-center justify-center pr-4">
+              <motion.div
+                className="relative w-full max-w-[360px]"
+                style={{ y: phoneParallax }}
+              >
+                <div className="relative aspect-[9/19.5] w-full">
+                  {features.map((feature, index) => (
+                    <motion.div
+                      key={feature.id}
+                      className="absolute inset-0"
+                      initial={false}
+                      animate={{ opacity: activeIndex === index ? 1 : 0 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                    >
+                      <Image
+                        src={feature.image || "/placeholder.svg"}
+                        alt={feature.title}
+                        fill
+                        priority={index === 0}
+                        sizes="(min-width: 768px) 360px"
+                        className="object-contain object-center drop-shadow-2xl"
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>

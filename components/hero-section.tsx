@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Download } from 'lucide-react'
 import { Logo } from "@/components/logo"
 
@@ -32,12 +33,17 @@ export function HeroSection() {
         <p className="text-sm text-brand-forest/60 mt-4">Try free, unlock for $0.99 • No subscription • Built for iOS 26</p>
 
         {/* Hero Image Placeholder */}
-        <div className="mt-12 flex justify-center">
-          <img
-            src="/hero-app-screenshot.png"
-            alt="PromptFolio app interface"
-            className="max-w-md w-full h-auto drop-shadow-2xl"
-          />
+        <div className="mt-12 md:mt-16 lg:mt-20 flex justify-center pb-16 md:pb-24 lg:pb-32">
+          <div className="relative w-full max-w-md">
+            <Image
+              src="/hero-app-screenshot.png"
+              alt="PromptFolio app interface"
+              width={768}
+              height={1536}
+              priority
+              className="h-auto w-full drop-shadow-2xl"
+            />
+          </div>
         </div>
       </div>
     </section>
