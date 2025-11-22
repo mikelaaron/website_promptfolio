@@ -46,19 +46,39 @@ export function ScrollingPhoneShowcase() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start 0.8", "end 0.2"],
   })
 
   const phoneParallax = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"])
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const segment = 1 / features.length
+    const buffer = 0.08 // 8% buffer zone to prevent rapid switching
+    
+    // Calculate which segment we're in with buffer
+    const rawIndex = latest / segment
     const nextIndex = Math.min(
       features.length - 1,
-      Math.max(0, Math.floor(latest / segment))
+      Math.max(0, Math.floor(rawIndex + buffer))
     )
 
-    setActiveIndex((prev) => (prev === nextIndex ? prev : nextIndex))
+    // Only update if we've moved significantly past the threshold
+    setActiveIndex((prev) => {
+      // If we're close to a boundary, stay on current index (hysteresis)
+      const currentSegmentStart = prev * segment
+      const currentSegmentEnd = (prev + 1) * segment
+      
+      // Stay on current if we're within buffer zone of current segment
+      if (latest >= currentSegmentStart - buffer && latest <= currentSegmentEnd + buffer) {
+        // Only switch if we're clearly in the next segment
+        if (nextIndex !== prev && Math.abs(latest - (nextIndex * segment)) > buffer / 2) {
+          return nextIndex
+        }
+        return prev
+      }
+      
+      return nextIndex
+    })
   })
 
   return (
