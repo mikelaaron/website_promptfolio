@@ -126,25 +126,26 @@ export function ScrollingPhoneShowcase() {
                 className="relative w-full max-w-[360px]"
                 style={{ y: phoneParallax }}
               >
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={feature.id}
-                    className="relative w-full"
-                    initial={false}
-                    animate={{ opacity: activeIndex === index ? 1 : 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                  >
-                    <Image
-                      src={feature.image || "/placeholder.svg"}
-                      alt={feature.title}
-                      width={768}
-                      height={1536}
-                      priority={index === 0}
-                      sizes="(min-width: 768px) 360px"
-                      className="w-full h-auto drop-shadow-2xl"
-                    />
-                  </motion.div>
-                ))}
+                <div className="relative aspect-[9/19.5] w-full bg-transparent">
+                  {features.map((feature, index) => (
+                    <motion.div
+                      key={feature.id}
+                      className="absolute inset-0 bg-transparent"
+                      initial={false}
+                      animate={{ opacity: activeIndex === index ? 1 : 0 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                    >
+                      <Image
+                        src={feature.image || "/placeholder.svg"}
+                        alt={feature.title}
+                        fill
+                        priority={index === 0}
+                        sizes="(min-width: 768px) 360px"
+                        className="object-contain object-center drop-shadow-2xl"
+                      />
+                    </motion.div>
+                  ))}
+                </div>
               </motion.div>
             </div>
           </div>
