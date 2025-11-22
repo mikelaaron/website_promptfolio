@@ -32,14 +32,12 @@ export function HeroSection() {
         <p className="text-sm text-brand-forest/60 mt-4">Try free, unlock for $0.99 • No subscription • Built for iOS 26</p>
 
         {/* Hero Image Placeholder */}
-        <div className="mt-12">
-          <div className="max-w-md mx-auto aspect-[9/19] bg-gradient-to-br from-brand-teal/10 to-brand-gold/10 rounded-[50px] border-8 border-brand-forest/10 shadow-2xl flex items-center justify-center">
-            <img
-              src="/iphone-mockup-showing-promptfolio-app-with-visual-.jpg"
-              alt="PromptFolio app interface"
-              className="w-full h-full object-cover rounded-[42px]"
-            />
-          </div>
+        <div className="mt-12 flex justify-center">
+          <img
+            src="/hero-app-screenshot.png"
+            alt="PromptFolio app interface"
+            className="max-w-md w-full h-auto drop-shadow-2xl"
+          />
         </div>
       </div>
     </section>
