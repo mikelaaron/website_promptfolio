@@ -1,8 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import { useRef, useState } from "react"
-import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion"
+import { useRef, useState, useEffect } from "react"
+import { motion } from "framer-motion"
 import { FeatureCard, type Feature } from "@/components/feature-card"
 
 const features: Feature[] = [
@@ -41,118 +41,131 @@ const features: Feature[] = [
 ]
 
 export function ScrollingPhoneShowcase() {
-  const sectionRef = useRef<HTMLElement | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  })
+  // Track which feature is in view using Intersection Observer
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
 
-  const phoneParallax = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"])
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.getAttribute('data-index') || '0')
+            setActiveIndex(index)
+          }
+        })
+      },
+      {
+        root: container,
+        threshold: 0.5, // Feature must be 50% visible to be considered active
+      }
+    )
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // Simple, clear logic: divide into 4 equal segments
-    // Feature 0: 0.00 - 0.25
-    // Feature 1: 0.25 - 0.50
-    // Feature 2: 0.50 - 0.75
-    // Feature 3: 0.75 - 1.00
-    
-    if (latest < 0.25) {
-      setActiveIndex(0)
-    } else if (latest < 0.50) {
-      setActiveIndex(1)
-    } else if (latest < 0.75) {
-      setActiveIndex(2)
-    } else {
-      setActiveIndex(3)
-    }
-  })
+    const items = container.querySelectorAll('[data-index]')
+    items.forEach((item) => observer.observe(item))
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-gradient-to-b from-brand-beige/30 via-white to-surface-beige py-16 md:py-24 md:h-[400vh]"
-    >
-      <div className="md:hidden space-y-8 px-4">
+    <>
+      {/* MOBILE VIEW */}
+      <section className="md:hidden relative bg-gradient-to-b from-brand-beige/30 via-white to-surface-beige py-16 px-4">
+        <div className="space-y-8">
+          {features.map((feature, index) => (
+            <FeatureCard key={feature.id} feature={feature} index={index} />
+          ))}
+        </div>
+      </section>
+
+      {/* DESKTOP/TABLET VIEW with CSS Scroll Snap */}
+      <section 
+        ref={containerRef}
+        className="hidden md:block relative bg-gradient-to-b from-brand-beige/30 via-white to-surface-beige overflow-y-auto h-screen"
+        style={{
+          scrollSnapType: 'y mandatory',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
         {features.map((feature, index) => (
-          <FeatureCard key={feature.id} feature={feature} index={index} />
-        ))}
-      </div>
+          <div
+            key={feature.id}
+            data-index={index}
+            className="h-screen flex items-center justify-center"
+            style={{
+              scrollSnapAlign: 'start',
+              scrollSnapStop: 'always',
+            }}
+          >
+            <div className="mx-auto flex w-full max-w-6xl gap-12 px-6">
+              {/* LEFT SIDE: Text Content */}
+              <div className="relative w-1/2 pl-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  viewport={{ once: false, amount: 0.5 }}
+                >
+                  <p className="text-xs font-medium uppercase tracking-[0.08em] text-brand-forest/60">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-4 text-4xl font-semibold leading-tight text-brand-forest">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-4 text-lg leading-relaxed text-brand-forest/80">
+                    {feature.description}
+                  </p>
 
-      <div className="hidden h-full md:block">
-        <div className="sticky top-0 flex h-screen items-center">
-          <div className="mx-auto flex w-full max-w-6xl gap-12 px-6">
-            <div className="relative w-1/2 pl-4">
-              <div className="relative min-h-[360px]">
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={feature.id}
-                    className="absolute inset-0 flex flex-col justify-center"
-                    animate={{
-                      opacity: activeIndex === index ? 1 : 0,
-                      y: activeIndex === index ? 0 : 32,
-                    }}
-                    transition={{ duration: 0.45, ease: "easeOut" }}
-                  >
-                    <p className="text-xs font-medium uppercase tracking-[0.08em] text-brand-forest/60">
-                      {String(index + 1).padStart(2, "0")}
-                    </p>
-                    <h3 className="mt-4 text-4xl font-semibold leading-tight text-brand-forest">
-                      {feature.title}
-                    </h3>
-                    <p className="mt-4 text-lg leading-relaxed text-brand-forest/80">
-                      {feature.description}
-                    </p>
-                  </motion.div>
-                ))}
+                  {/* Progress Indicator */}
+                  <div className="mt-12 flex items-center gap-3">
+                    <div className="flex -space-x-1">
+                      {features.map((f, i) => (
+                        <span
+                          key={f.id}
+                          className="h-2 w-2 rounded-full border border-white/50"
+                          style={{
+                            backgroundColor: activeIndex === i ? f.color : "transparent",
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <div className="h-px flex-1 bg-brand-forest/10">
+                      <div
+                        className="h-full bg-brand-forest transition-all duration-300"
+                        style={{ width: `${((activeIndex + 1) / features.length) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                </motion.div>
               </div>
 
-              <div className="mt-12 flex items-center gap-3">
-                <div className="flex -space-x-1">
-                  {features.map((feature, index) => (
-                    <span
-                      key={feature.id}
-                      className="h-2 w-2 rounded-full border border-white/50"
-                      style={{
-                        backgroundColor: activeIndex === index ? feature.color : "transparent",
-                      }}
-                    />
-                  ))}
-                </div>
-                <div className="h-px flex-1 bg-brand-forest/10">
-                  <div
-                    className="h-full bg-brand-forest"
-                    style={{ width: `${((activeIndex + 1) / features.length) * 100}%` }}
+              {/* RIGHT SIDE: Phone Mockup */}
+              <div className="relative w-1/2 flex items-center justify-center pr-4">
+                <motion.div
+                  className="w-full max-w-[360px]"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  viewport={{ once: false, amount: 0.5 }}
+                >
+                  <Image
+                    src={feature.image}
+                    alt={feature.title}
+                    width={768}
+                    height={1536}
+                    priority={index === 0}
+                    sizes="(min-width: 768px) 360px"
+                    className="w-full h-auto"
                   />
-                </div>
-              </div>
-            </div>
-
-            <div className="relative w-1/2 flex items-center justify-center pr-4">
-              <div className="relative w-full max-w-[360px]">
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={feature.id}
-                    className={activeIndex === index ? '' : 'hidden'}
-                    style={{ y: phoneParallax }}
-                  >
-                    <Image
-                      src={feature.image || "/placeholder.svg"}
-                      alt={feature.title}
-                      width={768}
-                      height={1536}
-                      priority={index === 0}
-                      sizes="(min-width: 768px) 360px"
-                      className="w-full h-auto"
-                    />
-                  </motion.div>
-                ))}
+                </motion.div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        ))}
+      </section>
+    </>
   )
 }
