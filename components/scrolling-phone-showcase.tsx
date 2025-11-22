@@ -126,14 +126,27 @@ export function ScrollingPhoneShowcase() {
                 className="relative w-full max-w-[360px]"
                 style={{ y: phoneParallax }}
               >
-                <div className="relative aspect-[9/19.5] w-full bg-transparent">
+                <div 
+                  className="relative aspect-[9/19.5] w-full"
+                  style={{ 
+                    background: 'transparent',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    outline: 'none',
+                    boxShadow: 'none'
+                  }}
+                >
                   {features.map((feature, index) => (
                     <motion.div
                       key={feature.id}
-                      className="absolute inset-0 bg-transparent"
+                      className="absolute inset-0"
                       initial={false}
                       animate={{ opacity: activeIndex === index ? 1 : 0 }}
                       transition={{ duration: 0.5, ease: "easeOut" }}
+                      style={{ 
+                        background: 'transparent',
+                        backgroundColor: 'transparent' 
+                      }}
                     >
                       <Image
                         src={feature.image || "/placeholder.svg"}
@@ -142,6 +155,7 @@ export function ScrollingPhoneShowcase() {
                         priority={index === 0}
                         sizes="(min-width: 768px) 360px"
                         className="object-contain object-center drop-shadow-2xl"
+                        style={{ backgroundColor: 'transparent' }}
                       />
                     </motion.div>
                   ))}
