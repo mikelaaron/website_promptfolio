@@ -136,7 +136,7 @@ export function ScrollingPhoneShowcase() {
                       height={1536}
                       priority={index === 0}
                       sizes="(min-width: 768px) 360px"
-                      className="w-full h-auto drop-shadow-2xl"
+                      className="w-full h-auto"
                     />
                   </motion.div>
                 ))}
