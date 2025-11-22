@@ -44,7 +44,7 @@ export function FeatureGrid() {
   ]
 
   return (
-    <section className="py-24 md:py-32 px-4 bg-surface-beige">
+    <section className="py-24 md:py-32 px-4 bg-white">
       <div className="max-w-6xl mx-auto">
         {/* Section Headline */}
         <h2 className="text-5xl md:text-7xl font-bold text-center text-brand-forest mb-16">
