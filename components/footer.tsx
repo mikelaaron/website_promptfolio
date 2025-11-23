@@ -5,12 +5,11 @@ export function Footer() {
     <footer className="bg-brand-forest text-white/50 py-5 px-4 text-center">
       <div className="max-w-4xl mx-auto">
         <p className="text-xs mb-2">
-          PromptFolio |{' '}
           <a href="/privacy" className="hover:text-white/70 transition-colors">
             Privacy Policy
           </a>{' '}
           |{' '}
-          <a href="/support" className="hover:text-white/70 transition-colors">
+          <a href="mailto:info@mikelaaron.com" className="hover:text-white/70 transition-colors">
             Support
           </a>
         </p>
