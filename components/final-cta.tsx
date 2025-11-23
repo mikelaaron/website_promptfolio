@@ -20,8 +20,6 @@ export function FinalCTA() {
           </button>
           <span className="text-sm text-white/60 italic">App submission in progress</span>
         </div>
-
-        <p className="text-sm text-white/80 mt-4">Available now for iPhone and iPad - Built for iOS 26</p>
       </div>
     </section>
   )
