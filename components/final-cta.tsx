@@ -10,13 +10,16 @@ export function FinalCTA() {
           Try free. Unlock unlimited for $0.99 
         </p>
 
-        <a
-          href="https://apps.apple.com/app/promptfolio"
-          className="inline-flex items-center gap-2 bg-brand-orange text-white px-8 py-4 rounded-[var(--radius-button)] text-lg font-semibold shadow-[var(--shadow-button)] hover:shadow-[var(--shadow-button-hover)] hover:bg-brand-orange-hover transition-all duration-200 hover:scale-105 mb-4"
-        >
-          <Download className="w-6 h-6" />
-          Download on the App Store
-        </a>
+        <div className="inline-flex flex-col items-center gap-2 mb-4">
+          <button
+            disabled
+            className="inline-flex items-center gap-2 bg-brand-orange/50 text-white px-8 py-4 rounded-[var(--radius-button)] text-lg font-semibold cursor-not-allowed opacity-75"
+          >
+            <Download className="w-6 h-6" />
+            Coming Soon to the App Store
+          </button>
+          <span className="text-sm text-white/60 italic">App submission in progress</span>
+        </div>
 
         <p className="text-sm text-white/80 mt-4">Available now for iPhone and iPad - Built for iOS 26</p>
       </div>

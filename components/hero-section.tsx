@@ -21,13 +21,16 @@ export function HeroSection() {
         </p>
 
         {/* Primary CTA */}
-        <a
-          href="https://apps.apple.com/app/promptfolio"
-          className="inline-flex items-center gap-2 bg-brand-teal text-white px-8 py-4 rounded-[var(--radius-button)] text-lg font-semibold shadow-[var(--shadow-button)] hover:shadow-[var(--shadow-button-hover)] hover:bg-brand-teal-dark transition-all duration-200 hover:scale-105"
-        >
-          <Download className="w-6 h-6" />
-          Download on the App Store
-        </a>
+        <div className="inline-flex flex-col items-center gap-2">
+          <button
+            disabled
+            className="inline-flex items-center gap-2 bg-brand-teal/50 text-white px-8 py-4 rounded-[var(--radius-button)] text-lg font-semibold cursor-not-allowed opacity-75"
+          >
+            <Download className="w-6 h-6" />
+            Coming Soon to the App Store
+          </button>
+          <span className="text-sm text-brand-forest/60 italic">App submission in progress</span>
+        </div>
 
         {/* Secondary Text */}
         <p className="text-sm text-brand-forest/60 mt-4">Try free, unlock for $0.99 • No subscription • Built for iOS 26</p>
