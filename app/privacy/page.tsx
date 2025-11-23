@@ -27,6 +27,7 @@ export default function PrivacyPage() {
         <div 
           name="termly-embed" 
           data-id="3dd649c4-25ad-4aad-965f-4c8b9fef5536"
+          data-type="iframe"
           className="prose prose-slate dark:prose-invert max-w-none"
         />
         
@@ -49,5 +50,3 @@ export default function PrivacyPage() {
     </div>
   )
 }
-
-
