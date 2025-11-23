@@ -1,13 +1,31 @@
-import Script from "next/script"
+"use client"
+
+import { useEffect } from "react"
 import { Logo } from "@/components/logo"
 import Link from "next/link"
 
-export const metadata = {
-  title: "Privacy Policy | PromptFolio",
-  description: "Privacy Policy for PromptFolio",
-}
-
 export default function PrivacyPage() {
+  useEffect(() => {
+    // Load Termly script
+    const script = document.createElement('script')
+    script.id = 'termly-jssdk'
+    script.src = 'https://app.termly.io/embed-policy.min.js'
+    script.async = true
+    
+    // Check if script is already loaded
+    if (!document.getElementById('termly-jssdk')) {
+      document.body.appendChild(script)
+    }
+    
+    return () => {
+      // Cleanup: remove script when component unmounts
+      const existingScript = document.getElementById('termly-jssdk')
+      if (existingScript) {
+        existingScript.remove()
+      }
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -25,17 +43,11 @@ export default function PrivacyPage() {
         
         {/* Termly Embed Container */}
         <div 
-          id="termly-embed" 
+          // @ts-ignore - Termly requires the 'name' attribute
+          name="termly-embed" 
           data-id="3dd649c4-25ad-4aad-965f-4c8b9fef5536"
           data-type="iframe"
           className="prose prose-slate dark:prose-invert max-w-none"
-        />
-        
-        {/* Load Termly Script */}
-        <Script
-          id="termly-jssdk"
-          strategy="lazyOnload"
-          src="https://app.termly.io/embed-policy.min.js"
         />
       </main>
 
