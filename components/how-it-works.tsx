@@ -35,8 +35,7 @@ export function HowItWorks() {
             </div>
             <h3 className="text-xl font-semibold mb-2" style={{ color: '#1A1A1A' }}>Build Your Library</h3>
             <p className="text-base text-brand-forest/80 leading-relaxed">
-              Auto-tags detect themes. Lexicon integration suggests pro vocabulary. Visual grid makes browsing
-              effortless.
+              Lexicon integration suggests pro vocabulary. Visual grid makes browsing effortless.
             </p>
           </div>
 
