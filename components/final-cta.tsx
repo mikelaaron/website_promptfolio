@@ -11,14 +11,15 @@ export function FinalCTA() {
         </p>
 
         <div className="inline-flex flex-col items-center gap-2 mb-4">
-          <button
-            disabled
-            className="inline-flex items-center gap-2 bg-brand-orange/50 text-white px-8 py-4 rounded-[var(--radius-button)] text-lg font-semibold cursor-not-allowed opacity-75"
+          <a
+            href="https://apps.apple.com/us/app/promptfolio/id6752543182"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-brand-orange text-white px-8 py-4 rounded-[var(--radius-button)] text-lg font-semibold hover:bg-brand-orange/90 transition-colors"
           >
             <Download className="w-6 h-6" />
-            Coming Soon to the App Store
-          </button>
-          <span className="text-sm text-white/60 italic">App submission in progress</span>
+            Download on the App Store
+          </a>
         </div>
       </div>
     </section>
