@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 interface LogoProps {
   size?: "sm" | "md" | "lg"
   className?: string
@@ -10,11 +12,19 @@ export function Logo({ size = "md", className = "" }: LogoProps) {
     lg: "w-32 h-32",
   }
 
+  const sizePx = {
+    sm: 40,
+    md: 96,
+    lg: 128,
+  }
+
   return (
-    <img 
-      src="/logo-light.png" 
-      alt="PromptFolio Logo" 
-      className={`${sizeClasses[size]} ${className} object-contain`} 
+    <Image
+      src="/logo-light.png"
+      alt="PromptFolio Logo"
+      width={sizePx[size]}
+      height={sizePx[size]}
+      className={`${sizeClasses[size]} ${className} object-contain`}
     />
   )
 }

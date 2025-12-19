@@ -9,7 +9,7 @@ export function Footer() {
             Privacy Policy
           </a>{' '}
           |{' '}
-          <a href="mailto:info@mikelaaron.com" className="hover:text-white/70 transition-colors">
+          <a href="mailto:mail@mikelaaron.com" className="hover:text-white/70 transition-colors">
             Support
           </a>
         </p>
