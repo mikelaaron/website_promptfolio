@@ -9,6 +9,7 @@ export type Feature = {
   description: string
   image: string
   color: string
+  badge?: string
 }
 
 type FeatureCardProps = {
@@ -50,6 +51,12 @@ export function FeatureCard({ feature, index }: FeatureCardProps) {
             style={{ backgroundColor: feature.color }}
           />
           Feature
+          {feature.badge && (
+            <span className="inline-flex items-center gap-1 bg-brand-gold/20 text-brand-forest px-2 py-0.5 rounded-full text-xs font-medium ml-auto">
+              <span className="w-1 h-1 bg-brand-gold rounded-full"></span>
+              {feature.badge}
+            </span>
+          )}
         </div>
         <h3 className="text-2xl font-semibold text-brand-forest leading-snug">{feature.title}</h3>
         <p className="text-base text-brand-forest/80 leading-relaxed">{feature.description}</p>

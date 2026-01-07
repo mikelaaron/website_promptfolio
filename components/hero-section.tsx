@@ -10,6 +10,14 @@ export function HeroSection() {
           <Logo size="lg" />
         </div>
 
+        {/* Version Badge */}
+        <div className="mb-4">
+          <span className="inline-flex items-center gap-1.5 bg-brand-gold/20 text-brand-forest px-3 py-1 rounded-full text-sm font-medium">
+            <span className="w-1.5 h-1.5 bg-brand-gold rounded-full"></span>
+            Version 2.0
+          </span>
+        </div>
+
         {/* Headline */}
         <h1 className="text-5xl md:text-7xl font-bold text-brand-forest mb-6 leading-tight">
           {"Build Your Visual Archive"}

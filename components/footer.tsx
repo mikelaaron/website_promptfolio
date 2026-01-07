@@ -17,6 +17,10 @@ export function Footer() {
         <p className="text-xs italic">
           Apple, iPhone, iPad, and iCloud are trademarks of Apple Inc.
         </p>
+
+        <p className="text-xs mt-2">
+          Version 2.0
+        </p>
       </div>
     </footer>
   )

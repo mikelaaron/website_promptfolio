@@ -15,6 +15,15 @@ const features: Feature[] = [
     image: "/feature1.png",
   },
   {
+    id: "feature-mj-import",
+    title: "Extract Midjourney Details",
+    description:
+      "Attach a Midjourney image and we'll instantly extract the prompt, parameters, and reference images.",
+    color: "var(--brand-gold)",
+    image: "/feature-mj-import.png",
+    badge: "Version 2.0",
+  },
+  {
     id: "feature-vocab",
     title: "Vocabulary That Inspires",
     description:
@@ -94,9 +103,17 @@ export function ScrollingPhoneShowcase() {
                   transition={{ duration: 0.5, ease: "easeOut" }}
                   viewport={{ once: false, amount: 0.5 }}
                 >
-                  <p className="text-xs font-medium uppercase tracking-[0.08em] text-brand-forest/60">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
+                  <div className="flex items-center gap-3">
+                    <p className="text-xs font-medium uppercase tracking-[0.08em] text-brand-forest/60">
+                      {String(index + 1).padStart(2, "0")}
+                    </p>
+                    {feature.badge && (
+                      <span className="inline-flex items-center gap-1.5 bg-brand-gold/20 text-brand-forest px-2.5 py-1 rounded-full text-xs font-medium">
+                        <span className="w-1.5 h-1.5 bg-brand-gold rounded-full"></span>
+                        {feature.badge}
+                      </span>
+                    )}
+                  </div>
                   <h3 className="mt-4 text-4xl font-semibold leading-tight text-brand-forest">
                     {feature.title}
                   </h3>
